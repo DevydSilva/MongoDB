@@ -26,11 +26,11 @@ app.use("/api/user", verifyToken, userRouter);
 app.use("/api/party", partyRouter);
 
 mongoose.connect(
-  "mongodb://localhost/partytime",
+  `mongodb://localhost/${dbName}`,
   {
     useNewUrlParser: true,
-    //useFindAndModify: false,
-   // useUnifiedTopology: true
+    useFindAndModify: false,
+    useUnifiedTopology: true
   }
 );
 
