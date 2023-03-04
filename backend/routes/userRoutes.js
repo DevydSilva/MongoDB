@@ -45,7 +45,7 @@ router.put("/", verifyToken, async (req, res) => {
     // creating user object
     const updateData = {
       name: req.body.name,
-      email: req.body.email
+      idade: req.body.idade
     };
 
     // check if password match

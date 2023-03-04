@@ -7,39 +7,39 @@ const User = require("../models/user");
 router.post("/register", async (req, res) => {
 
     const name = req.body.name;
-    const email = req.body.email;
-    const password = req.body.password;
-    const confirmpassword = req.body.confirmpassword;
+    const idade = req.body.idade;
+    const fila = req.body.fila;
+    const confirmfila = req.body.confirmfila;
 
     console.log(req.body);
 
     // check for required fields
-    if(name == null || email == null || password == null || confirmpassword == null) {
+    if(name == null || idade == null || fila == null || confirmpassword == null) {
         return res.status(400).json({ error: "Por favor, preencha todos os campos." });
     }
 
     // confirm password validation
-    if(password != confirmpassword) {
+    if(fila  != confirmfila) {
         return res.status(400).json({ error: "As senhas não conferem." });
     }
 
     // verify user email
-    const isEmailExists = await User.findOne({ email: req.body.email });
+    const isIdadeExists = await User.findOne({ idade: req.body.idade });
 
-    if (isEmailExists) {
+    if (isIdadeExists) {
         return res.status(400).json({ error: "O e-mail informado já está em uso." });
     }
 
     // creating password
     const salt = await bcrypt.genSalt(12);
-    const reqPassword = req.body.password;
+    const reqfila = req.body.fila;
 
-    const passwordHash = await bcrypt.hash(reqPassword, salt);
+    const filaHash = await bcrypt.hash(reqfila, salt);
   
     const user = new User({
         name: name,
-        email: email,
-        password: passwordHash
+        idade: idade,
+        fila: filaHash
     });
 
     try {      
@@ -69,18 +69,18 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
 
-    const email = req.body.email;
-    const password = req.body.password;
+    const idade = req.body.email;
+    const fila = req.body.fila;
 
     // check if user exists
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ idade: idade });
 
     if (!user) {
         return res.status(400).json({ error: "Não há usuário cadastrado com este e-mail!" });
     }
 
     // check if password match
-    const checkPassword = await bcrypt.compare(password, user.password)
+    const checkPassword = await bcrypt.compare(fila, user.fila)
 
     if(!checkPassword) {
         return res.status(400).json({ error: "Senha inválida" });
